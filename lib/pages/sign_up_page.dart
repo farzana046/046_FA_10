@@ -13,12 +13,10 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       body: Stack(
         children: [
-          // Background image
           Positioned.fill(
             child: Image.asset("images/new.jpg", fit: BoxFit.cover),
           ),
 
-          // Back button
           Positioned(
             left: 10,
             top: 40,
@@ -30,7 +28,6 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
 
-          // Sign Up Form
           Column(
             children: [
               const Spacer(flex: 1),
@@ -59,7 +56,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const SizedBox(height: 20),
 
-                        // Email Field
                         TextField(
                           decoration: InputDecoration(
                             labelText: "Email",
@@ -70,7 +66,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const SizedBox(height: 15),
 
-                        // Password Field
                         TextField(
                           obscureText: true,
                           decoration: InputDecoration(
@@ -82,7 +77,6 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const SizedBox(height: 15),
 
-                        // Confirm Password Field
                         TextField(
                           obscureText: true,
                           decoration: InputDecoration(
@@ -94,14 +88,11 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const SizedBox(height: 25),
 
-                        // Sign Up Button
                         SizedBox(
                           width: 200,
                           height: 45,
                           child: ElevatedButton(
-                            onPressed: () {
-                              // TODO: handle signup
-                            },
+                            onPressed: () {},
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.purple,
                               shape: RoundedRectangleBorder(
@@ -120,14 +111,13 @@ class _SignUpPageState extends State<SignUpPage> {
 
                         const SizedBox(height: 15),
 
-                        // Already have account? Sign In
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text("Already have an account? "),
                             GestureDetector(
                               onTap: () {
-                                Navigator.pop(context); // back to LoginPage
+                                Navigator.pop(context);
                               },
                               child: const Text(
                                 "Sign In",

@@ -14,12 +14,10 @@ class _SignInPageState extends State<SignInPage> {
     return Scaffold(
       body: Stack(
         children: [
-          // Background image
           Positioned.fill(
             child: Image.asset("images/new.jpg", fit: BoxFit.cover),
           ),
 
-          // Back button
           Positioned(
             left: 10,
             top: 40,
@@ -31,7 +29,6 @@ class _SignInPageState extends State<SignInPage> {
             ),
           ),
 
-          // Login Form
           Column(
             children: [
               const Spacer(flex: 1),
@@ -60,7 +57,6 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         const SizedBox(height: 20),
 
-                        // Email Field
                         TextField(
                           decoration: InputDecoration(
                             labelText: "Email",
@@ -71,7 +67,6 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         const SizedBox(height: 15),
 
-                        // Password Field
                         TextField(
                           obscureText: true,
                           decoration: InputDecoration(
@@ -83,14 +78,11 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         const SizedBox(height: 25),
 
-                        // Sign In Button
                         SizedBox(
                           width: 200,
                           height: 45,
                           child: ElevatedButton(
-                            onPressed: () {
-                              // TODO: handle login
-                            },
+                            onPressed: () {},
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.purple,
                               shape: RoundedRectangleBorder(
@@ -109,7 +101,6 @@ class _SignInPageState extends State<SignInPage> {
 
                         const SizedBox(height: 15),
 
-                        // Sign Up link
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
