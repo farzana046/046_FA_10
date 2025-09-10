@@ -45,7 +45,7 @@ class _SignInPageState extends State<SignInPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Welcome Back',
+                'MediMind',
                 style: TextStyle(
                   fontSize: 38,
                   fontWeight: FontWeight.bold,
