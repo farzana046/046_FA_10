@@ -9,55 +9,112 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final authService = AuthService();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  void signIn() async {
-    final email = _emailController.text;
-    final password = _passwordController.text;
+  final AuthService _authService = AuthService();
 
+  Future<void> _signIn() async {
     try {
-      await authService.signInWithEmailPassword(email, password);
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/welcome');
-      }
+      await _authService.signInWithEmailPassword(
+        _emailController.text,
+        _passwordController.text,
+      );
+      Navigator.pushReplacementNamed(context, '/welcome');
     } catch (e) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Error: $e")));
+      ).showSnackBar(SnackBar(content: Text('Failed to sign in: $e')));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFFE3F2FD), Color(0xFFE1F5FE)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                "Sign In",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                'Welcome Back',
+                style: TextStyle(
+                  fontSize: 38,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF5E35B1),
+                ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 8),
+              const Text(
+                'Sign in to your account',
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+              const SizedBox(height: 40),
               TextField(
                 controller: _emailController,
-                decoration: const InputDecoration(labelText: "Email"),
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  prefixIcon: const Icon(Icons.email, color: Color(0xFF5E35B1)),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.9),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                keyboardType: TextInputType.emailAddress,
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 16),
               TextField(
                 controller: _passwordController,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  prefixIcon: const Icon(Icons.lock, color: Color(0xFF5E35B1)),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.9),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
                 obscureText: true,
-                decoration: const InputDecoration(labelText: "Password"),
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(onPressed: signIn, child: const Text("Sign In")),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: _signIn,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF5E35B1),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 60,
+                    vertical: 16,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                child: const Text('Sign In', style: TextStyle(fontSize: 18)),
+              ),
+              const SizedBox(height: 10),
               TextButton(
-                onPressed: () => Navigator.pushNamed(context, '/sign-up'),
-                child: const Text("Don't have an account? Sign Up"),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/sign-up');
+                },
+                child: const Text(
+                  'Don\'t have an account? Sign Up',
+                  style: TextStyle(
+                    color: Color(0xFF5E35B1),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),
