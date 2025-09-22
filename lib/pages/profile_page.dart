@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import '../auth/auth_service.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+  final bool isDarkMode;
+  final Function(bool)? onThemeChange;
+
+  const ProfilePage({super.key, this.isDarkMode = false, this.onThemeChange});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +19,26 @@ class ProfilePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("Logged in as:\n$userEmail", textAlign: TextAlign.center),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.dark_mode, color: Colors.grey),
+                const SizedBox(width: 10),
+                const Text("Dark Mode"),
+                Switch(
+                  value: isDarkMode,
+                  onChanged: (value) {
+                    if (onThemeChange != null) {
+                      onThemeChange!(
+                        value,
+                      ); // triggers theme change in main.dart
+                    }
+                  },
+                  activeColor: Theme.of(context).primaryColor,
+                ),
+              ],
+            ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {

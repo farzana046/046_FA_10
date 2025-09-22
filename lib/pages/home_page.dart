@@ -3,7 +3,9 @@ import '../services/medicine_service.dart';
 import '../auth/auth_service.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final Function(bool)? onThemeChange;
+
+  const HomePage({super.key, this.onThemeChange});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -16,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _dosageController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -49,7 +52,6 @@ class _HomePageState extends State<HomePage> {
     }
 
     await medicineService.addMedicine(name, dosage, time);
-
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Medicine added successfully')),
     );
@@ -169,12 +171,56 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  List<Map<String, dynamic>> get filteredMedicines {
+    final query = _searchController.text.trim().toLowerCase();
+    if (query.isEmpty) return medicines;
+    return medicines
+        .where((m) => m['name'].toLowerCase().contains(query))
+        .toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     final String? userEmail = AuthService().getCurrentUserEmail();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('MediMind')),
+      appBar: AppBar(
+        title: const Text('MediMind'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: const Text('Search Medicine'),
+                  content: TextField(
+                    controller: _searchController,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter medicine name',
+                    ),
+                    onChanged: (_) => setState(() {}),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        _searchController.clear();
+                        setState(() {});
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Clear'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Search'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
@@ -198,6 +244,13 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Profile'),
+              onTap: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Sign Out'),
               onTap: () async {
@@ -218,9 +271,9 @@ class _HomePageState extends State<HomePage> {
         ),
         child: ListView.builder(
           padding: const EdgeInsets.all(16),
-          itemCount: medicines.length,
+          itemCount: filteredMedicines.length,
           itemBuilder: (context, index) {
-            final medicine = medicines[index];
+            final medicine = filteredMedicines[index];
             return Card(
               margin: const EdgeInsets.symmetric(vertical: 8),
               child: ListTile(
